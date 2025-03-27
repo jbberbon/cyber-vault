@@ -1,0 +1,45 @@
+<script setup>
+import {ref} from "vue";
+import Button from 'primevue/button';
+import InputText from 'primevue/inputtext';
+
+const name = ref('john');
+const status = ref('active');
+const tasks = ref(['task1', 'task2', 'task3']);
+const newTask = ref('');
+const addTask = () => {
+  if (newTask.value.trim() !== '') {
+    tasks.value.push(newTask.value);
+    newTask.value = '';
+  }
+}
+
+const deleteTask = (index) => {
+  tasks.value.splice(index, 1);
+}
+</script>
+
+<template>
+  <h1 class="text-5xl font-bold text-yellow-200 dark:text-red-500">{{ name }}</h1>
+  <p v-if="status === 'active'">User is STILL active</p>
+  <p v-else>User is inactive</p>
+
+  <br/>
+
+  <form @submit.prevent="addTask">
+    <label for="newTask">Add Task</label>
+    <InputText type="text" id="newTask" name="newTask" v-model="newTask"/>
+    <Button type="submit"label="Submit" />
+  </form>
+  <h3>Tasks</h3>
+  <ul>
+    <li v-for="(task, index) in tasks" :key="task">
+      <span class="text-red-200">{{ task }}</span>
+      <Button @click="deleteTask(index)">x</Button>
+    </li>
+  </ul>
+</template>
+
+<style scoped>
+
+</style>

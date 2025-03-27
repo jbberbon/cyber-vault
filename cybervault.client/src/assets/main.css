@@ -1,0 +1,14 @@
+@import './reset.css';
+@import 'primeicons/primeicons.css';
+@import "tailwindcss/theme.css" layer(theme);
+@import "tailwindcss/utilities.css" layer(utilities);
+@custom-variant dark (&:where(.dark, .dark *));
+
+body {
+    width: 100%;
+    font-family: Poppins, sans-serif;
+}
+
+:root {
+    --p-popover-content-padding: 0.5rem !important; /* Adjust the value as needed */
+}

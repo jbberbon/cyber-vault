@@ -1,0 +1,10 @@
+{
+"SpaProxyServer": {
+"ServerUrl": "https://localhost:49201",
+"RedirectUrl": "",
+"LaunchCommand": "npm run dev",
+"WorkingDirectory": "C:\\Users\\JohnChristianBerbon\\Documents\\Berbon - Training\\Cyber\\John Christian Berbon\\CyberVault\\CyberVault.Server\\..\\cybervault.client",
+"MaxTimeoutInSeconds": "120",
+"KeepRunning": "false"
+}
+}

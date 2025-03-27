@@ -1,0 +1,24 @@
+{
+  "Version": 1,
+  "Hash": "6eiEJAPCUCCqjqIxga3tQrJ5IvuURawoh3KgZUaIWkw=",
+  "Source": "CyberVault.Server",
+  "BasePath": "_content/CyberVault.Server",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [
+    {
+      "Identity": "C:\\Users\\JohnChristianBerbon\\Documents\\Berbon - Training\\Cyber\\John Christian Berbon\\CyberVault\\cybervault.client\\cybervault.client.esproj",
+      "Version": 2,
+      "Source": "cybervault.client",
+      "GetPublishAssetsTargets": "GetCurrentProjectPublishStaticWebAssetItems",
+      "AdditionalPublishProperties": "Configuration=Debug;Platform=AnyCPU",
+      "AdditionalPublishPropertiesToRemove": "WebPublishProfileFile;TargetFramework;RuntimeIdentifier;SelfContained",
+      "GetBuildAssetsTargets": "GetCurrentProjectBuildStaticWebAssetItems",
+      "AdditionalBuildProperties": "Configuration=Debug;Platform=AnyCPU",
+      "AdditionalBuildPropertiesToRemove": "WebPublishProfileFile;TargetFramework;RuntimeIdentifier;SelfContained"
+    }
+  ],
+  "DiscoveryPatterns": [],
+  "Assets": [],
+  "Endpoints": []
+}
