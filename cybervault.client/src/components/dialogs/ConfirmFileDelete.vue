@@ -42,7 +42,7 @@ const onDeleteFile = async () => {
   try {
     await fileMutateAsync(params)
     deleteFileCallToast({
-      detail: "Deleted " + params.fileName
+      summary: "Deleted " + params.fileName
     })
     closeAndUpdate()
   } catch {

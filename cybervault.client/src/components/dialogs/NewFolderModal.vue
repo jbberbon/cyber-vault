@@ -51,7 +51,7 @@ const onSubmit = handleSubmit(async (params: ICreateFolder) => {
     closeAndUpdate()
     resetForm()
     createFolderToast({
-      detail: "Successfully created " + params.folderName
+      summary: "Successfully created " + params.folderName
     })
   } catch {
     createFolderToast({

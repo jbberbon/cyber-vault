@@ -40,7 +40,7 @@ const onDeleteFolder = async () => {
   try {
     await mutateAsync(props.directoryId)
     toast({
-      detail: "Successfully deleted " + props.name
+      summary: "Successfully deleted " + props.name
     })
     closeAndUpdate()
   } catch {
