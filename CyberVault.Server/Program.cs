@@ -92,6 +92,19 @@ builder.Services.AddScoped<IFolderService, FolderService>();
 builder.Services.AddScoped<Lazy<IFilesService>>(provider =>
     new Lazy<IFilesService>(() => provider.GetRequiredService<IFilesService>()));
 
+
+// CORS For deployed frontend
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowSpecificOrigin", policy =>
+    {
+        policy.WithOrigins("https://cyber-vault-fad3cpb2dqgje7fn.southeastasia-01.azurewebsites.net")  // Specify the frontend URL or wildcard '*'
+            .AllowAnyHeader()
+            .AllowAnyMethod()
+            .AllowCredentials();  // Important if you are using cookies
+    });
+});
+
 var app = builder.Build();
 
 app.UseDefaultFiles();
