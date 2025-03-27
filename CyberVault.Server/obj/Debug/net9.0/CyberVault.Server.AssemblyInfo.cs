@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("CyberVault.Server")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+252dfdcb17d27404f4b3e55dcf402b1459651f63")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+2ca6569e2f664fccf48eeb944f296b1d1f318837")]
 [assembly: System.Reflection.AssemblyProductAttribute("CyberVault.Server")]
 [assembly: System.Reflection.AssemblyTitleAttribute("CyberVault.Server")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
