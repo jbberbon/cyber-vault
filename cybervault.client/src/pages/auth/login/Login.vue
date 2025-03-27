@@ -78,5 +78,9 @@ const onSubmit = handleSubmit(async (credentials: ILoginUser) => {
         </Button>
       </div>
     </form>
+    <div class="flex gap-2">
+      <p>Don't have an account?</p>
+      <a class="text-[var(--p-primary-500)] underline cursor-pointer" href="/register">Sign up</a>
+    </div>
   </AuthLayout>
 </template>

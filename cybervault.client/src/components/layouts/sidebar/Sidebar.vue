@@ -40,7 +40,7 @@ const sidebarClass = computed(() => props.isOpen ? "w-[280px]" : "w-0 opacity-0"
         <li
           v-for="(item, index) in SIDEBAR_CONTENTS.user"
           :key="index"
-          class="p-2 cursor-pointer hover:bg-[var(--p-surface-200)] rounded-md"
+          class="p-2 cursor-pointer hover:bg-[var(--p-surface-200)] dark:hover:bg-[var(--p-surface-800)] rounded-md"
           :class="{ 'active': route.path === item.path }"
         >
           <div @click="onNavigate(item.path)" class="flex gap-4">

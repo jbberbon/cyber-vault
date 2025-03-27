@@ -1,12 +1,10 @@
 ﻿<script setup lang="ts">
-import Toolbar from 'primevue/toolbar';
 import Button from 'primevue/button';
 import Sidebar from '@/components/layouts/sidebar/Sidebar.vue';
 import {useSidebarStore} from "@/lib/stores/sidebar-store.ts";
 import {computed} from "vue";
-import {useRouter} from "vue-router";
+import Topbar from "@/components/layouts/topbar/Topbar.vue";
 
-const router = useRouter();
 const sidebar = useSidebarStore();
 
 const mainContentClass = computed(() => sidebar.isOpen ? '!ml-[280px] w-[calc(100%-280px)]' : '!ml-0 w-full')
@@ -15,33 +13,7 @@ const toggleBtnPosition = computed(() => sidebar.isOpen ? "top-22 left-69" : "to
 
 
 <template>
-  <Toolbar class="!bg-transparent !border-none !rounded-none">
-    <template #start>
-      <div class="flex items-center cursor-pointer" @click="router.push('/')">
-        <img src="../../assets/logo.svg" alt="cyber vault logo" class="w-[48px]"/>
-        <h1 class="text-lg cyber-vault-logo-txt hidden">Cyber Vault</h1>
-      </div>
-    </template>
-
-    <template #end>
-      <div class="sm:hidden" @click="sidebar.toggle">
-        <Button
-          icon="pi pi-bars"
-          severity="secondary"
-          variant="text"
-          rounded
-          aria-label="Sidebar toggle"
-          size="large"
-        />
-      </div>
-
-      <div class="hidden sm:flex items-center gap-1">
-        <Button icon="pi pi-cog" severity="secondary" variant="text" rounded
-                aria-label="Settings" size="large"/>
-        <Button icon="pi pi-user" variant="outlined" rounded aria-label="Notification" />
-      </div>
-    </template>
-  </Toolbar>
+  <Topbar />
 
   <Sidebar :isOpen="sidebar.isOpen"/>
   <main
@@ -66,12 +38,3 @@ const toggleBtnPosition = computed(() => sidebar.isOpen ? "top-22 left-69" : "to
     </div>
   </main>
 </template>
-
-<style scoped>
-
-@media screen and (min-width: 600px) {
-  .cyber-vault-logo-txt {
-    display: inline-block;
-  }
-}
-</style>

@@ -62,7 +62,7 @@ public class AuthService : IAuthService
 
             return response;
         }
-        
+
         // 03. Success
         response.IsSuccess = true;
         return response;
@@ -97,7 +97,7 @@ public class AuthService : IAuthService
             if (result.IsLockedOut)
             {
                 response.IsSuccess = false;
-                response.ErrorCode = ErrorCodes.TooManyAttempts;
+                response.ErrorCode = ErrorCodes.AccLockedOut;
                 response.Errors = [_authHelpers.GetAuthErrorMessage(AuthErrorsEnum.AccountLockedOut)];
                 return response;
             }
@@ -129,5 +129,42 @@ public class AuthService : IAuthService
             response.ErrorCode = ErrorCodes.InternalServerError;
             return response;
         }
+    }
+
+    public async Task<AuthServiceResponseDto> CheckAsync(string userId)
+    {
+        var response = new AuthServiceResponseDto();
+
+        var user = await _userManager.FindByIdAsync(userId);
+
+        // 01. Check if user still exists
+        if (user == null)
+        {
+            response.IsSuccess = false;
+            response.ErrorCode = ErrorCodes.NotFound;
+            return response;
+        }
+
+        // 02. Check if email is confirmed
+        if (!user.EmailConfirmed)
+        {
+            response.IsSuccess = false;
+            response.ErrorCode = ErrorCodes.Forbidden;
+            response.Errors = [_authHelpers.GetAuthErrorMessage(AuthErrorsEnum.EmailNotConfirmed)];
+            return response;
+        }
+
+        // 03. Check if user is locked out
+        if (user.LockoutEnd is not null)
+        {
+            response.IsSuccess = false;
+            response.ErrorCode = ErrorCodes.AccLockedOut;
+            response.Errors = [_authHelpers.GetAuthErrorMessage(AuthErrorsEnum.AccountLockedOut)];
+            return response;
+        }
+
+        // 04. Return
+        response.IsSuccess = true;
+        return response;
     }
 }

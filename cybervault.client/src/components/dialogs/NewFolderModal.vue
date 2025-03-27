@@ -63,14 +63,15 @@ const onSubmit = handleSubmit(async (params: ICreateFolder) => {
 
 <template>
   <Dialog v-model:visible="modelValue" modal header="New folder">
-    <form @submit="onSubmit" class="flex flex-col gap-4 min-w-[280px]">
+    <form @submit="onSubmit" class="flex flex-col gap-4 w-[280px]">
       <div class="flex flex-col">
         <InputText v-model="folderName"/>
         <span class="text-sm text-red-400">{{ errors.folderName }}</span>
       </div>
       <div class="flex justify-end gap-2">
-        <Button type="button" label="Cancel" severity="secondary" @click="closeAndUpdate"></Button>
-        <Button type="submit" label="Save"></Button>
+        <Button type="button" severity="secondary" size="small" outlined label="Cancel"
+                @click="closeAndUpdate"></Button>
+        <Button type="submit" label="Save" size="small"></Button>
       </div>
     </form>
   </Dialog>

@@ -6,6 +6,6 @@ export const createFolderSchema = toTypedSchema(
     folderName: zod
       .string()
       .min(1, {message: 'Folder name is required'})
-      .regex(/^(?!.*[+/\\]).*$/, {message: 'Folder name cannot contain +, /, or \\'})
+      .regex(/^(?!\s)(?!.*\s$)(?!.*[+/\\]).*$/, {message: 'Folder name cannot contain +, /, \\, or leading or trailing spaces.'})
   })
 );

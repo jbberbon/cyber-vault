@@ -3,7 +3,7 @@ import Dialog from "primevue/dialog"
 import Button from "primevue/button";
 import {computed} from "vue";
 import {useDeleteFile} from "@/lib/services/files/use-file.ts";
-import type {IFileDelete} from "@/lib/interfaces/file-interface.ts";
+import type {IFileDownloadOrDelete} from "@/lib/interfaces/file-interface.ts";
 import {useCallToast} from "@/lib/hooks/use-call-toast.ts";
 import DELETE_FILE_ERR_MAP
   from "@/lib/constants/api-error-messages/file-error-messages.ts/delete-file-error-msg.ts";
@@ -35,7 +35,7 @@ const {
   error: deleteFileError
 } = useDeleteFile();
 const onDeleteFile = async () => {
-  const params: IFileDelete = {
+  const params: IFileDownloadOrDelete = {
     fileName: props.name,
     parentDirectoryId: props.parentDirectoryId
   }

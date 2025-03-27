@@ -25,7 +25,7 @@ const isRenameDialogOpen = ref(false);
 
 <template>
   <PopoverRoot>
-    <PopoverTrigger class="bg-transparent border-none p-0" :class="props.class">
+    <PopoverTrigger class="bg-transparent border-none p-0" :class="props.class ?? ''">
       <Button
         ref="buttonEl"
         icon="pi pi-ellipsis-v"
@@ -36,7 +36,8 @@ const isRenameDialogOpen = ref(false);
       />
     </PopoverTrigger>
     <PopoverPortal>
-      <PopoverContent align="start" class="bg-white rounded-md shadow-md p-1">
+      <PopoverContent align="start"
+                      class="bg-white dark:bg-[var(--p-surface-900)] rounded-md shadow-md p-1">
         <div class="flex flex-col">
           <Button label="Rename" icon="pi pi-pen-to-square" severity="secondary" variant="text"
                   class="!flex !justify-start !w-full"
@@ -45,12 +46,13 @@ const isRenameDialogOpen = ref(false);
                   class="p-button-text p-button-danger !flex !justify-start !w-full"
                   @click="isConfirmDeleteOpen = true"/>
         </div>
-        <PopoverArrow class="fill-white"/>
+        <PopoverArrow class="fill-white fill-white dark:fill-[var(--p-surface-900)]"/>
       </PopoverContent>
     </PopoverPortal>
   </PopoverRoot>
 
-  <ConfirmFolderDelete :name="props.folder.name" :directory-id="folderId" v-model:is-open="isConfirmDeleteOpen"/>
+  <ConfirmFolderDelete :name="props.folder.name" :directory-id="folderId"
+                       v-model:is-open="isConfirmDeleteOpen"/>
 </template>
 
 <style>

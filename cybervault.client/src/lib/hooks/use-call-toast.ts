@@ -8,7 +8,6 @@ interface IBaseToast {
   httpCode?: number,
   severity?: "success" | "info" | "warn" | "error" | "secondary" | "contrast" | undefined,
   summary?: string
-  detail?: string
 }
 
 export const useCallToast = (errorMap?: Record<number, string>) => {

@@ -2,7 +2,7 @@ using CyberVault.Server.Data;
 using CyberVault.Server.Miscs;
 using CyberVault.Server.Miscs.Utilities.AuthHelpers;
 using CyberVault.Server.Models;
-using CyberVault.Server.Services;
+using CyberVault.Server.Services.AzureBlobService;
 using CyberVault.Server.Services.AuthService;
 using CyberVault.Server.Services.DirectoryService;
 using CyberVault.Server.Services.FilesService;
@@ -28,9 +28,10 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 // 01.03 Setup Identity
 builder.Services.AddIdentity<User, Role>(options =>
     {
-        options.Password.RequiredLength = 7;
-        options.Password.RequireDigit = false;
-        options.Password.RequireUppercase = false;
+        options.Password.RequiredLength = 8;
+        options.Password.RequireDigit = true;
+        options.Password.RequireUppercase = true;
+        options.Password.RequireNonAlphanumeric = true;
         options.SignIn.RequireConfirmedAccount = true;
     })
     .AddRoles<Role>()

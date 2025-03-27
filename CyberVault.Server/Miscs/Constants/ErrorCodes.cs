@@ -10,5 +10,5 @@ public static class ErrorCodes
     public const int AlreadyExists = 409;
     public const int Forbidden = 403;
     public const int NoContent = 204;
-    public const int TooManyAttempts = 429;
+    public const int AccLockedOut = 429;
 }

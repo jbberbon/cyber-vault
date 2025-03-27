@@ -7,6 +7,7 @@ public class DownloadOrDeleteFileDto
 {
     [StringLengthRange]
     public required string FileName { get; set; }
-    [RegularExpression(@"^[A-Fa-f0-9-]{36}$", ErrorMessage = "ID must be a valid GUID.")]
+    [RegularExpression(@"^(?!\s)(?!.*\s$)[A-Fa-f0-9-]{36}$",
+        ErrorMessage = "ID must be a valid GUID and cannot have leading or trailing spaces.")]
     public string ParentDirectoryId { get; set; } = "";
 }

@@ -12,4 +12,5 @@ public class BlobFileResponseDto
     public int ErrorCode { get; set; } = 0;
     public BlobFileDto BlobFile { get; set; }
     public List<BlobFileDto>? BlobFileList { get; set; }
+    public string? SasUrl { get; set; }
 }

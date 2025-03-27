@@ -6,7 +6,7 @@
   content?: string
 }
 
-interface IFileDelete {
+interface IFileDownloadOrDelete {
   fileName: string,
   parentDirectoryId?: string
 }
@@ -21,4 +21,4 @@ interface IUploadFile {
   parentFolderId?: string
 }
 
-export type {IFile, IFileDelete, ICreateFolder, IUploadFile}
+export type {IFile, IFileDownloadOrDelete, ICreateFolder, IUploadFile}

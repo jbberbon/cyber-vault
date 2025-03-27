@@ -2,6 +2,7 @@
 using CyberVault.Server.DTO.BlobFile;
 using CyberVault.Server.Miscs.Constants;
 using CyberVault.Server.Miscs.Utilities;
+using CyberVault.Server.Services.AzureBlobService;
 using CyberVault.Server.Services.DirectoryService;
 using CyberVault.Server.Services.ModelService;
 
@@ -13,6 +14,7 @@ public class FilesService : IFilesService
     private readonly IDirectoryService _directoryService;
     private readonly ILogger<FilesService> _logger;
     private readonly IFolderService _folderService;
+    private readonly IAzureBlobService _azureBlobService;
 
     public FilesService(
         IAzureBlobService azureBlobService,
@@ -21,6 +23,7 @@ public class FilesService : IFilesService
         IFolderService folderService
     )
     {
+        _azureBlobService = azureBlobService;
         _blobContainerClient = azureBlobService.BlobContainerClient;
         _directoryService = directoryService;
         _logger = logger;
@@ -78,7 +81,7 @@ public class FilesService : IFilesService
                 var path = item.IsPrefix ? item.Prefix : item.Blob.Name;
                 path = item.IsPrefix ? path.Remove(path.Length - 1) : path; // Remove the Tailing Slash ('/')
                 var pathLastElement = DirectoryUtilities.PluckLastDirectoryElement(path);
-                
+
                 // 05. Remove UserID Root folder from the URI
                 var sanitizedPath = DirectoryUtilities.RemoveRootDirectory(
                     ownerId,
@@ -90,7 +93,7 @@ public class FilesService : IFilesService
                 {
                     // 06.01 Extract FolderName
                     var (extractedName, extractedId) = DirectoryUtilities.SplitNameAndServerAssignedId(pathLastElement);
-                    
+
                     items.Add(new BlobFileDto
                     {
                         ServerAssignedId = extractedId,
@@ -235,17 +238,12 @@ public class FilesService : IFilesService
                 return response;
             }
 
-            // 04. Download
-            Stream? data = await file.OpenReadAsync();
-            var content = await file.DownloadAsync();
-            string name = file.Name;
-            string contentType = content.Value.Details.ContentType;
+            // 04. Get the download URL from Azure
+            var sasUrl = _azureBlobService.GenerateReadOnlySasToken(fullPath);
 
             // 05. Success
             response.IsSuccess = true;
-            response.BlobFile.Name = name;
-            response.BlobFile.Content = data;
-            response.BlobFile.ContentType = contentType;
+            response.SasUrl = sasUrl;
 
             return response;
         }

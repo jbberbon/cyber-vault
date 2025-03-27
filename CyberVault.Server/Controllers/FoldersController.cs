@@ -33,16 +33,15 @@ public class FoldersController : ControllerBase
 
         // 02. Call CreateDirectory Service
         var response = await _directoryService.CreateAsync(userId, request.FolderName, request.ParentDirectoryId ?? "");
-        if (!response.IsSuccess)
-        {
-            var hasError = response.Errors.Any();
-            return hasError
-                ? StatusCode(response.ErrorCode, new { errors = response.Errors })
-                : StatusCode(response.ErrorCode);
-        }
 
         // 03. Success
-        return Created();
+        if (response.IsSuccess) return Created();
+
+        // 04. Error
+        var hasError = response.Errors.Any();
+        return hasError
+            ? StatusCode(response.ErrorCode, new { errors = response.Errors })
+            : StatusCode(response.ErrorCode);
     }
 
     [HttpDelete("delete")]

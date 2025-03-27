@@ -1,7 +1,7 @@
 ﻿interface IUser {
   firstName?: string,
   lastName?: string,
-  email: string,
+  email?: string,
 }
 
 interface ILoginUser {
@@ -18,7 +18,7 @@ interface IRegisterUser {
   lastName?: string,
   email: string,
   password: string
-  confirmPassword: string
+  confirmPassword?: string
 }
 
 export type {IUser, IRegisterUser, ILoginUser, ILoginResponse}

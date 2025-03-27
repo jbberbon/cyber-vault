@@ -1,8 +1,8 @@
 ﻿import {defineStore} from 'pinia'
-import {ref} from "vue";
+import {useLocalStorage} from '@vueuse/core'
 
 export const useSidebarStore = defineStore('sidebar', () => {
-  const isOpen = ref(true);
+  const isOpen = useLocalStorage('isSidebarOpen', true);
 
   function toggle() {
     isOpen.value = !isOpen.value;

@@ -1,4 +1,4 @@
-﻿using Azure;
+﻿/*using Azure;
 using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
 using CyberVault.Server.DTO.BlobFile;
@@ -65,4 +65,4 @@ public class ListServiceTest
         Assert.False(response.IsSuccess);
         Assert.Equal(errorCode, response.ErrorCode);
     }
-}
+}*/

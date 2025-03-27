@@ -6,6 +6,7 @@ using CyberVault.Server.DTO.BlobFile;
 using CyberVault.Server.Miscs.Constants;
 using CyberVault.Server.Miscs.Utilities;
 using CyberVault.Server.Models;
+using CyberVault.Server.Services.AzureBlobService;
 using Microsoft.EntityFrameworkCore;
 
 namespace CyberVault.Server.Services.DirectoryService;
@@ -64,12 +65,13 @@ public class DirectoryService : IDirectoryService
         }
 
         // 02. Check on Subdirectories
+        var tempPath = $"{parentPathWithNoUserId}/{folderName}+";
         isExisting = await _dbContext.Folders
             .AnyAsync(folder =>
                 folder.OwnerId == ownerId &&
                 folder.Name == folderName &&
                 folder.Path != null &&
-                folder.Path.StartsWith(parentPathWithNoUserId));
+                folder.Path.StartsWith(tempPath));
 
         return isExisting;
     }
@@ -119,12 +121,8 @@ public class DirectoryService : IDirectoryService
             Guid uuid = Guid.NewGuid();
             fullPath = $"{fullPath}+{uuid}";
 
-            // 04. Create the Directory in Azure blob
-            var fileSystemClient = _dataLakeServiceClient.GetFileSystemClient(_blobContainerClient.Name);
-            await fileSystemClient.CreateDirectoryAsync(fullPath);
-
-            // 05. Store new Folder to DB
-            Folder newFolder = new Folder
+            // 04. Store new Folder to DB
+            var newFolder = new Folder
             {
                 Id = uuid,
                 Name = newFolderName,
@@ -134,9 +132,15 @@ public class DirectoryService : IDirectoryService
                 UpdatedAt = DateTime.Now
             };
             await _dbContext.Folders.AddAsync(newFolder);
+
+            // 05. Create the Directory in Azure blob
+            var fileSystemClient = _dataLakeServiceClient.GetFileSystemClient(_blobContainerClient.Name);
+            await fileSystemClient.CreateDirectoryAsync(fullPath);
+            
+            // 06. Commit changes to DB if nothing happened while adding blob to Azure
             await _dbContext.SaveChangesAsync();
 
-            // 06. Success
+            // 07. Success
             response.IsSuccess = true;
             return response;
         }

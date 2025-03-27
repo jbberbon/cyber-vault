@@ -2,7 +2,6 @@
 using CyberVault.Server.DTO.BlobFile;
 using CyberVault.Server.Services.FilesService;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CyberVault.Server.Controllers;
@@ -19,7 +18,7 @@ public class FilesController : ControllerBase
     {
         _filesService = filesService;
     }
-    
+
     [HttpGet("list")]
     [Authorize]
     public async Task<IActionResult> List([FromQuery] GetListItemsDto request)
@@ -34,17 +33,14 @@ public class FilesController : ControllerBase
         // 02. Call ListAsync Service
         var response = await _filesService.ListAsync(userId, request.DirectoryId);
 
-        // 03. Check if success
-        if (!response.IsSuccess)
-        {
-            var hasError = response.Errors.Any();
-            return hasError
-                ? StatusCode(response.ErrorCode, new { errors = response.Errors })
-                : StatusCode(response.ErrorCode);
-        }
-
-        // 04. Success
-        return Ok(response.BlobFileList);
+        // 03. Success
+        if (response.IsSuccess) return Ok(response.BlobFileList);
+        
+        // 04. Error
+        var hasError = response.Errors.Any();
+        return hasError
+            ? StatusCode(response.ErrorCode, new { errors = response.Errors })
+            : StatusCode(response.ErrorCode);
     }
 
     [HttpPost("upload")]
@@ -60,16 +56,15 @@ public class FilesController : ControllerBase
 
         // 02. Call UploadAsync Service
         var response = await _filesService.UploadAsync(userId, request.File, request.ParentFolderId ?? "");
-        if (!response.IsSuccess)
-        {
-            var hasError = response.Errors.Any();
-            return hasError
-                ? StatusCode(response.ErrorCode, new { errors = response.Errors })
-                : StatusCode(response.ErrorCode);
-        }
 
         // 03. Success
-        return Created();
+        if (response.IsSuccess) return Created();
+
+        // 04. Error
+        var hasError = response.Errors.Any();
+        return hasError
+            ? StatusCode(response.ErrorCode, new { errors = response.Errors })
+            : StatusCode(response.ErrorCode);
     }
 
     [HttpGet("download")]
@@ -85,34 +80,15 @@ public class FilesController : ControllerBase
 
         // 02. Call DownloadAsync Service
         var response = await _filesService.DownloadAsync(userId, request.FileName, request.ParentDirectoryId);
-        if (!response.IsSuccess)
-        {
-            var hasError = response.Errors.Any();
-            return hasError
-                ? StatusCode(response.ErrorCode, new { errors = response.Errors })
-                : StatusCode(response.ErrorCode);
-        }
 
-        try
-        {
-            // Ensure Content-Disposition is set to attachment to force the download
-            var fileContent = response.BlobFile.Content!;
-            var contentType = response.BlobFile.ContentType!;
-            var fileName = response.BlobFile.Name;
+        // 03. Success
+        if (response.IsSuccess) return Ok(new { sasUrl = response.SasUrl });
 
-            // Set Content-Disposition header to "attachment"
-            Response.Headers["Content-Disposition"] = $"attachment; filename=\"{fileName}\"";
-
-            // Set Content-Type to binary
-            Response.ContentType = "application/octet-stream";
-
-            // Return the file content to the user for download
-            return File(fileContent, contentType, fileName);
-        }
-        catch (Exception e)
-        {
-            return StatusCode(500);
-        }
+        // 04. Error
+        var hasError = response.Errors.Any();
+        return hasError
+            ? StatusCode(response.ErrorCode, new { errors = response.Errors })
+            : StatusCode(response.ErrorCode);
     }
 
     [HttpDelete("delete")]
@@ -129,15 +105,13 @@ public class FilesController : ControllerBase
         // 02. Call DeleteAsync Service
         var response = await _filesService.DeleteAsync(userId, request.FileName, request.ParentDirectoryId);
 
-        if (!response.IsSuccess)
-        {
-            var hasError = response.Errors.Any();
-            return hasError
-                ? StatusCode(response.ErrorCode, new { errors = response.Errors })
-                : StatusCode(response.ErrorCode);
-        }
-
         // 03. Success
-        return Ok();
+        if (response.IsSuccess) return Ok();
+
+        // 04. Error
+        var hasError = response.Errors.Any();
+        return hasError
+            ? StatusCode(response.ErrorCode, new { errors = response.Errors })
+            : StatusCode(response.ErrorCode);
     }
 }
