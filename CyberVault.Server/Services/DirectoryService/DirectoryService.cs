@@ -77,9 +77,42 @@ public class DirectoryService : IDirectoryService
         return isExisting;
     }
 
+    public async Task<BlobFileResponseDto> CreateRootAsync(string ownerId)
+    {
+        var response = new BlobFileResponseDto();
+        try
+        {
+            // 01. Create the Directory in Azure blob
+            var fileSystemClient = _dataLakeServiceClient.GetFileSystemClient(_blobContainerClient.Name);
+            await fileSystemClient.CreateDirectoryAsync(ownerId);
+
+            // 02. Success
+            response.IsSuccess = true;
+            return response;
+        }
+        catch (Azure.RequestFailedException e)
+        {
+            _logger.LogError("Something went wrong while creating user root directory. Errors: {Errors}",
+                string.Join(", ", e.Message));
+            response.IsSuccess = false;
+            response.ErrorCode = e.Status;
+            response.Errors = [e.ErrorCode ?? "500"];
+            return response;
+        }
+        catch (Exception e)
+        {
+            _logger.LogError("Something went wrong while creating user root directory. Errors: {Errors}", string.Join(", ", e));
+            response.IsSuccess = false;
+            response.ErrorCode = ErrorCodes.InternalServerError;
+            response.Errors = ["Something went wrong while creating folder."];
+            return response;
+        }
+    }
+
+
     public async Task<BlobFileResponseDto> CreateAsync(
         string ownerId,
-        string newFolderName = "",
+        string newFolderName,
         string parentDirectoryId = ""
     )
     {
@@ -91,9 +124,7 @@ public class DirectoryService : IDirectoryService
             string fullPath;
             if (string.IsNullOrEmpty(parentDirectoryId)) // User's root folder
             {
-                // To create User Root Directory, ownerId is used as the path
-                fullPath = ownerId;
-                if(!newFolderName.IsNullOrEmpty()) fullPath += $"/{newFolderName}";
+                fullPath = $"{ownerId}/{newFolderName}";
             }
             else // Subdirectory
             {
@@ -121,7 +152,7 @@ public class DirectoryService : IDirectoryService
             }
 
             // 03. Assign UUID to the folderName
-            Guid uuid = Guid.NewGuid();
+            var uuid = Guid.NewGuid();
             fullPath = $"{fullPath}+{uuid}";
 
             // 04. Store new Folder to DB
@@ -158,7 +189,7 @@ public class DirectoryService : IDirectoryService
         }
         catch (Exception e)
         {
-            _logger.LogError("Something went wrong while retrieving blobs. Errors: {Errors}", string.Join(", ", e));
+            _logger.LogError("Something went wrong while creating user root directory. Errors: {Errors}", string.Join(", ", e));
             response.IsSuccess = false;
             response.ErrorCode = ErrorCodes.InternalServerError;
             response.Errors = ["Something went wrong while creating folder."];

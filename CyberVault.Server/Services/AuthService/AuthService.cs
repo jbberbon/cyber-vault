@@ -68,7 +68,7 @@ public class AuthService : IAuthService
         
         // 03. Create root directory for the user
         var newUser = await _userManager.FindByEmailAsync(request.Email);
-        var newDirectoryResult = await _directoryService.CreateAsync(newUser!.Id);
+        var newDirectoryResult = await _directoryService.CreateRootAsync(newUser!.Id);
         if (!newDirectoryResult.IsSuccess)
         {
             response.IsSuccess = false;
