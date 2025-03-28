@@ -14,7 +14,6 @@ const folderIcon = ICONS_MAP['folder'];
 const id = props?.folder?.serverAssignedId;
 const folderName = props?.folder?.name;
 
-
 // 02. Handle Double Click on folder
 const navigateFolder = () => {
   if (id) {

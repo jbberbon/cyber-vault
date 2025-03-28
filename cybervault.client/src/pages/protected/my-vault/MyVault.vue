@@ -97,7 +97,8 @@ const viewPreferenceStore = useDataViewPreferenceStore()
 
       <!--  02. Main Content  -->
       <template v-else>
-        <MyVaultGrid v-if="viewPreferenceStore.viewPreference === 'grid'" :folders="folders" :files="files"/>
+        <MyVaultGrid v-if="viewPreferenceStore.viewPreference === 'grid'" :folders="folders"
+                     :files="files"/>
         <MyVaultList v-else :files="listFilesQuery.data.value?.data ?? []"/>
       </template>
     </div>

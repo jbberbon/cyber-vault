@@ -7,15 +7,20 @@ import type {IFileDownloadOrDelete} from "@/lib/interfaces/file-interface.ts";
 import {useCallToast} from "@/lib/hooks/use-call-toast.ts";
 import DELETE_FILE_ERR_MAP
   from "@/lib/constants/api-error-messages/file-error-messages.ts/delete-file-error-msg.ts";
+import {useRoute} from "vue-router";
 
 const props = defineProps({
   name: {
     type: String,
     required: true
   },
-  parentDirectoryId: String,
   isOpen: Boolean
 })
+const route = useRoute()
+const parentFolderId = Array.isArray(route.params.id)
+  ? route.params.id[0]  // Get the first instance of id
+  : route.params.id;
+
 const deleteFileCallToast = useCallToast(DELETE_FILE_ERR_MAP)
 // 01. Create a computed property for binding to Dialog's visible prop
 const emit = defineEmits();
@@ -37,7 +42,7 @@ const {
 const onDeleteFile = async () => {
   const params: IFileDownloadOrDelete = {
     fileName: props.name,
-    parentDirectoryId: props.parentDirectoryId
+    parentDirectoryId: parentFolderId
   }
   try {
     await fileMutateAsync(params)
