@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("CyberVault.Test")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+f976f8d0125e0030a4eedab7648e275b286adb11")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+322826fb26eacb3dc718fc0811d16a3390c2e8bf")]
 [assembly: System.Reflection.AssemblyProductAttribute("CyberVault.Test")]
 [assembly: System.Reflection.AssemblyTitleAttribute("CyberVault.Test")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

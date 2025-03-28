@@ -1,4 +1,4 @@
-﻿namespace CyberVault.Server.Miscs;
+﻿namespace CyberVault.Server.Miscs.Constants;
 
 public class UserSecretKeys
 {

@@ -1,5 +1,5 @@
 using CyberVault.Server.Data;
-using CyberVault.Server.Miscs;
+using CyberVault.Server.Miscs.Constants;
 using CyberVault.Server.Miscs.Utilities.AuthHelpers;
 using CyberVault.Server.Models;
 using CyberVault.Server.Services.AzureBlobService;

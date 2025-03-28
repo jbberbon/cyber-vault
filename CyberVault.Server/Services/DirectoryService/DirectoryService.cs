@@ -78,7 +78,7 @@ public class DirectoryService : IDirectoryService
 
     public async Task<BlobFileResponseDto> CreateAsync(
         string ownerId,
-        string newFolderName,
+        string newFolderName = "",
         string parentDirectoryId = ""
     )
     {
@@ -136,7 +136,7 @@ public class DirectoryService : IDirectoryService
             // 05. Create the Directory in Azure blob
             var fileSystemClient = _dataLakeServiceClient.GetFileSystemClient(_blobContainerClient.Name);
             await fileSystemClient.CreateDirectoryAsync(fullPath);
-            
+
             // 06. Commit changes to DB if nothing happened while adding blob to Azure
             await _dbContext.SaveChangesAsync();
 

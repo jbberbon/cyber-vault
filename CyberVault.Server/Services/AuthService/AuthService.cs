@@ -3,6 +3,7 @@ using CyberVault.Server.DTO.User;
 using CyberVault.Server.Miscs.Constants;
 using CyberVault.Server.Miscs.Utilities.AuthHelpers;
 using CyberVault.Server.Models;
+using CyberVault.Server.Services.DirectoryService;
 using Microsoft.AspNetCore.Identity;
 
 namespace CyberVault.Server.Services.AuthService;
@@ -14,13 +15,15 @@ public class AuthService : IAuthService
     private readonly ILogger<AuthService> _logger;
     private readonly IAuthHelpers _authHelpers;
     private readonly SignInManager<User> _signInManager;
+    private readonly IDirectoryService _directoryService;
 
     public AuthService(
         IMapper mapper,
         UserManager<User> userManager,
         ILogger<AuthService> logger,
         IAuthHelpers authHelpers,
-        SignInManager<User> signInManager
+        SignInManager<User> signInManager,
+        IDirectoryService directoryService
     )
     {
         _mapper = mapper;
@@ -28,6 +31,7 @@ public class AuthService : IAuthService
         _logger = logger;
         _authHelpers = authHelpers;
         _signInManager = signInManager;
+        _directoryService = directoryService;
     }
 
     public async Task<AuthServiceResponseDto> RegisterAsync(UserForRegistrationDto request)
@@ -50,20 +54,34 @@ public class AuthService : IAuthService
 
         if (!result.Succeeded)
         {
-            // Retrieve errors from result
             var errors = result.Errors.Select(e => e.Description).ToList();
 
             response.IsSuccess = false;
             response.ErrorCode = ErrorCodes.InternalServerError;
             response.Errors = errors;
 
-            // 03.1. Log the error
+            // Log the error
             _logger.LogError("Something went wrong while creating user. Errors: {Errors}", string.Join(", ", errors));
 
             return response;
         }
+        
+        // 03. Create root directory for the user
+        var newUser = await _userManager.FindByEmailAsync(request.Email);
+        var newDirectoryResult = await _directoryService.CreateAsync(newUser!.Id);
+        if (!newDirectoryResult.IsSuccess)
+        {
+            response.IsSuccess = false;
+            response.ErrorCode = newDirectoryResult.ErrorCode;
+            response.Errors = newDirectoryResult.Errors;
+            
+            // Log the error
+            _logger.LogError("Something went wrong while creating user. Errors: {Errors}", string.Join(", ", newDirectoryResult.Errors));
+            
+            return response;
+        }
 
-        // 03. Success
+        // 04. Success
         response.IsSuccess = true;
         return response;
     }
