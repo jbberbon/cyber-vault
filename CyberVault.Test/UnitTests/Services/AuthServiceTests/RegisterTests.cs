@@ -3,6 +3,7 @@ using CyberVault.Server.DTO.User;
 using CyberVault.Server.Miscs.Utilities.AuthHelpers;
 using CyberVault.Server.Models;
 using CyberVault.Server.Services.AuthService;
+using CyberVault.Server.Services.DirectoryService;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
@@ -22,6 +23,7 @@ public class RegisterTests
 
     private readonly Mock<ILogger<AuthService>> _loggerMock;
     private readonly Mock<IAuthHelpers> _authHelpersMock;
+    private readonly Mock<IDirectoryService> _directoryServiceMock;
 
     public RegisterTests()
     {
@@ -69,7 +71,8 @@ public class RegisterTests
             _userManager.Object,
             _loggerMock.Object,
             _authHelpersMock.Object,
-            _signInManagerMock.Object
+            _signInManagerMock.Object,
+            _directoryServiceMock.Object
         );
     }
 
