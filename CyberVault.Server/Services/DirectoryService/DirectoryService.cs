@@ -8,6 +8,7 @@ using CyberVault.Server.Miscs.Utilities;
 using CyberVault.Server.Models;
 using CyberVault.Server.Services.AzureBlobService;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 
 namespace CyberVault.Server.Services.DirectoryService;
 
@@ -90,7 +91,9 @@ public class DirectoryService : IDirectoryService
             string fullPath;
             if (string.IsNullOrEmpty(parentDirectoryId)) // User's root folder
             {
-                fullPath = $"{ownerId}/{newFolderName}";
+                // To create User Root Directory, ownerId is used as the path
+                fullPath = ownerId;
+                if(!newFolderName.IsNullOrEmpty()) fullPath += $"/{newFolderName}";
             }
             else // Subdirectory
             {
