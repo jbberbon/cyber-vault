@@ -27,9 +27,9 @@ const navigateFolder = () => {
   <div class="relative">
     <div @click="navigateFolder"
          class="bg-[var(--p-surface-100)] dark:bg-[var(--p-surface-800)] py-2 px-3 pr-1 justify-between rounded-sm cursor-pointer hover:bg-[var(--p-surface-200)] dark:hover:bg-[var(--p-surface-700)]">
-      <div class="w-full h-full flex items-center gap-2 !truncate">
+      <div class="w-full h-full flex items-center gap-2">
         <i :class="folderIcon"></i>
-        <p class="!truncate">{{ folderName }}</p>
+        <p class="w-[80%] !truncate">{{ folderName }}</p>
       </div>
     </div>
 

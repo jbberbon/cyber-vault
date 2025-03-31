@@ -13,28 +13,29 @@ const toggleBtnPosition = computed(() => sidebar.isOpen ? "top-22 left-69" : "to
 
 
 <template>
-  <Topbar />
-
-  <Sidebar :isOpen="sidebar.isOpen"/>
-  <main
-    class="flex-1 p-2 transition-all duration-300 ease-in-out"
-    :class="mainContentClass"
-  >
-    <div
-      class="w-full bg-white p-2 pt-4 sm:p-4 sm:pt-6 rounded-md h-[89vh] dark:bg-[var(--p-surface-950)] overflow-scroll">
-      <div class="hidden sm:block">
-        <Button
-          severity="secondary"
-          class="!w-7 !h-7 !fixed top-4 z-[9999] !transition-all !duration-300 !ease-in-out"
-          :class="toggleBtnPosition"
-          :icon="sidebar.isOpen ? 'pi pi-angle-left' : 'pi pi-angle-right'"
-          raised
-          rounded
-          aria-label="Toggle Sidebar"
-          @click="sidebar.toggle"
-        />
+  <section class="h-[100vh]">
+    <Topbar/>
+    <Sidebar :isOpen="sidebar.isOpen"/>
+    <main
+        class="flex-1 p-2 transition-all duration-300 ease-in-out h-[calc(100vh-72px)]"
+        :class="mainContentClass"
+    >
+      <div
+          class="w-full bg-white p-2 pt-4 sm:p-4 sm:pt-6 rounded-md dark:bg-[var(--p-surface-950)] overflow-y-scroll h-[100%]">
+        <div class="hidden sm:block">
+          <Button
+              severity="secondary"
+              class="!w-7 !h-7 !fixed top-4 z-[9999] !transition-all !duration-300 !ease-in-out"
+              :class="toggleBtnPosition"
+              :icon="sidebar.isOpen ? 'pi pi-angle-left' : 'pi pi-angle-right'"
+              raised
+              rounded
+              aria-label="Toggle Sidebar"
+              @click="sidebar.toggle"
+          />
+        </div>
+        <slot><!-- Children components here! --></slot>
       </div>
-      <slot><!-- Children components here! --></slot>
-    </div>
-  </main>
+    </main>
+  </section>
 </template>

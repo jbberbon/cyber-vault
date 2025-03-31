@@ -22,7 +22,7 @@ const sidebarClass = computed(() => props.isOpen ? "w-[280px]" : "w-0 opacity-0"
 
 <template>
   <aside
-    class="h-[90vh] transition-all duration-300 ease-in-out fixed"
+    class="transition-all duration-300 ease-in-out fixed"
     :class="sidebarClass">
     <div class="w-full p-4">
       <NewItemsDropdown>

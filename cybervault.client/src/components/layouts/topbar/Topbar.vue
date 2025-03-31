@@ -13,7 +13,7 @@ const darkModeStore = useDarkModeStore();
 </script>
 
 <template>
-  <Toolbar class="!bg-transparent !border-none !rounded-none">
+  <Toolbar class="my-toolbar !bg-transparent !border-none !rounded-none">
     <template #start>
       <div class="flex items-center cursor-pointer" @click="router.push('/')">
         <img src="../../../assets/logo.svg" alt="cyber vault logo" class="w-[48px]"/>
@@ -47,11 +47,15 @@ const darkModeStore = useDarkModeStore();
     </template>
   </Toolbar>
 </template>
-<style scoped>
+<style>
 
 @media screen and (min-width: 600px) {
   .cyber-vault-logo-txt {
     display: inline-block;
+  }
+
+  .my-toolbar .p-toolbar {
+    min-height: 1000px !important;
   }
 }
 </style>
