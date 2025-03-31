@@ -6,6 +6,15 @@
   content?: string
 }
 
+interface IDirectoryPath {
+  serverAssignedId?: string,
+  name?: string
+}
+interface IFileList {
+  directoryPathArray: IDirectoryPath[],
+  items: IFile[]
+}
+
 interface IFileDownloadOrDelete {
   fileName: string,
   parentDirectoryId?: string
@@ -21,4 +30,4 @@ interface IUploadFile {
   parentFolderId?: string
 }
 
-export type {IFile, IFileDownloadOrDelete, ICreateFolder, IUploadFile}
+export type {IFile, IFileList, IDirectoryPath, IFileDownloadOrDelete, ICreateFolder, IUploadFile}

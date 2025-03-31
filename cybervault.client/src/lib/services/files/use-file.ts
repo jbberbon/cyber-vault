@@ -15,14 +15,14 @@ import {
 import type {
   ICreateFolder,
   IFile,
-  IFileDownloadOrDelete,
+  IFileDownloadOrDelete, IFileList,
   IUploadFile
 } from "@/lib/interfaces/file-interface.ts";
 import {computed, type Ref} from "vue";
 import {useUploadStore} from "@/lib/stores/upload-progress-store.ts";
 
-const fetchFileList = async (folderId?: string): Promise<AxiosResponse<IFile[]>> => {
-  return axiosConfig.get<IFile[]>(listFilesEndpoint, {
+const fetchFileList = async (folderId?: string): Promise<AxiosResponse<IFileList>> => {
+  return axiosConfig.get<IFileList>(listFilesEndpoint, {
     params: folderId ? {directoryId: folderId} : undefined
   });
 };
@@ -96,7 +96,7 @@ const downloadFile = async (request: IFileDownloadOrDelete): Promise<AxiosRespon
 
 export const useListFiles = (folderId: Ref<string | undefined>) => {
   const queryKey = computed(() => ['list-files', folderId.value || "root"]);
-  return useQuery<AxiosResponse<IFile[]>, AxiosError>({
+  return useQuery<AxiosResponse<IFileList>, AxiosError>({
     queryKey: queryKey,
     queryFn: () => fetchFileList(folderId.value),
     enabled: true,

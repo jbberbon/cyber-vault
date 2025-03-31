@@ -33,19 +33,21 @@ public class FilesService : IFilesService
     public async Task<BlobFileResponseDto> ListAsync(string ownerId, string directoryId)
     {
         var response = new BlobFileResponseDto();
-        var items = new List<BlobFileDto>();
 
         try
         {
             // 01. Prepare fullPath
+            var retrievedPath = "";
             string fullPath;
+            var items = new List<BlobFileDto>();
+            
             if (string.IsNullOrEmpty(directoryId)) // Root folder
             {
                 fullPath = $"{ownerId}/";
             }
             else // Subdirectory
             {
-                var retrievedPath = await _folderService
+                retrievedPath = await _folderService
                     .GetFolderPathByIdAndOwnerAsync(
                         Guid.Parse(directoryId),
                         ownerId
@@ -116,7 +118,8 @@ public class FilesService : IFilesService
             }
 
             response.IsSuccess = true;
-            response.BlobFileList = items;
+            response.BlobFileList.Items = items;
+            response.BlobFileList.DirectoryPathArray = DirectoryUtilities.ConvertPathToArray(retrievedPath);
             return response;
         }
         catch (Azure.RequestFailedException e)
@@ -133,7 +136,7 @@ public class FilesService : IFilesService
             _logger.LogError("Something went wrong while retrieving blobs. Errors: {Errors}", string.Join(", ", e));
             response.IsSuccess = false;
             response.ErrorCode = ErrorCodes.InternalServerError;
-            response.Errors = ["Something went wrong while retrieving blobs."];
+            response.Errors = ["Something went wrong while retrieving blobs. HUHU"];
             return response;
         }
     }

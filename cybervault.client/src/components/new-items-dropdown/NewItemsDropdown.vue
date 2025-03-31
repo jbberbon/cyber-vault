@@ -1,11 +1,10 @@
 ﻿<script setup lang="ts">
-import {computed, ref, watch} from "vue";
+import {computed, ref} from "vue";
 import TieredMenu from 'primevue/tieredmenu';
 import NewFolderModal from "@/components/dialogs/NewFolderModal.vue";
 import {useUploadFile} from "@/lib/services/files/use-file.ts";
 import {useRoute} from "vue-router";
 import type {IUploadFile} from "@/lib/interfaces/file-interface.ts";
-import {useUploadStore} from "@/lib/stores/upload-progress-store.ts";
 
 const newButtonPopout = ref();
 const toggleNewButton = (event: MouseEvent) => {
@@ -51,7 +50,7 @@ const folderId = computed(() => {
 });
 
 // Initialize UseFileUpload Hook and fileUpload Handler
-const {mutateAsync, error, isPending} = useUploadFile()
+const {mutateAsync, error} = useUploadFile()
 
 const handleUploadFile = async (event: Event) => {
   const file = (event.target as HTMLInputElement).files?.[0];

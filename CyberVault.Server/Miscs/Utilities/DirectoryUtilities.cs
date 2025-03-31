@@ -1,4 +1,6 @@
-﻿namespace CyberVault.Server.Miscs.Utilities;
+﻿using CyberVault.Server.DTO.Directory;
+
+namespace CyberVault.Server.Miscs.Utilities;
 
 public static class DirectoryUtilities
 {
@@ -16,23 +18,18 @@ public static class DirectoryUtilities
 
     public static string RemoveRootDirectory(string rootDirectory, string path)
     {
-        if (path.StartsWith(rootDirectory + "/"))
-        {
-            return path.Substring(rootDirectory.Length + 1);
-        }
-
-        return path; // No change if it doesn't start with the root directory
+        return path.StartsWith(rootDirectory + "/") ? path.Substring(rootDirectory.Length + 1) : path;
     }
 
     public static (string name, string serverAssignedId) SplitNameAndServerAssignedId(string folderOrBlobName)
     {
-        int lastPlusIndex = folderOrBlobName.LastIndexOf('+');
+        var lastPlusIndex = folderOrBlobName.LastIndexOf('+');
 
         // If a '+' symbol is found, split into name and serverAssignedId
         if (lastPlusIndex != -1)
         {
-            string name = folderOrBlobName.Substring(0, lastPlusIndex);
-            string serverAssignedId = folderOrBlobName.Substring(lastPlusIndex + 1);
+            var name = folderOrBlobName.Substring(0, lastPlusIndex);
+            var serverAssignedId = folderOrBlobName.Substring(lastPlusIndex + 1);
             serverAssignedId = RemoveTailingForwardSlash(serverAssignedId);
 
             return (name, serverAssignedId);
@@ -44,15 +41,33 @@ public static class DirectoryUtilities
 
     public static string PluckLastDirectoryElement(string path)
     {
-        int lastSlashIndex = path.LastIndexOf('/');
-        
+        var lastSlashIndex = path.LastIndexOf('/');
+
         // If slash symbol is found
-        if (lastSlashIndex != -1)
+        return lastSlashIndex != -1 ? path.Substring(lastSlashIndex + 1) : path;
+    }
+    
+    public static List<DirectoryArrayDto> ConvertPathToArray(string path)
+    {
+        var pathArray = new List<DirectoryArrayDto>();
+        
+        // If the path is empty, return an empty array
+        if (string.IsNullOrEmpty(path))
         {
-            return path.Substring(lastSlashIndex + 1);
+            return pathArray;
         }
         
-        // If no slash symbol found
-        return path;
+        var splitString = path.Split('/').ToList();
+        foreach (var t in splitString)
+        {
+            var (name, serverAssignedId) = SplitNameAndServerAssignedId(t);
+            pathArray.Add(new DirectoryArrayDto
+            {
+                Name = name,
+                ServerAssignedId = serverAssignedId
+            });
+        }
+
+        return pathArray;
     }
 }
