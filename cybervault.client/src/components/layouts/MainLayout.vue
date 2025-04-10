@@ -25,7 +25,7 @@ const toggleBtnPosition = computed(() => sidebar.isOpen ? "top-22 left-69" : "to
         <div class="hidden sm:block">
           <Button
               severity="secondary"
-              class="!w-7 !h-7 !fixed top-4 z-[9999] !transition-all !duration-300 !ease-in-out"
+              class="!w-7 !h-7 !fixed top-4 z-[99] !transition-all !duration-300 !ease-in-out"
               :class="toggleBtnPosition"
               :icon="sidebar.isOpen ? 'pi pi-angle-left' : 'pi pi-angle-right'"
               raised

@@ -2,10 +2,11 @@
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
 import type {IFile} from "@/lib/interfaces/file-interface.ts";
-import {FILE_TYPE_TO_GENERAL_TYPE, ICONS_MAP} from "@/lib/constants/icons-map.ts";
+import {ICONS_MAP} from "@/lib/constants/icons-map.ts";
 import FilePopover from "@/pages/protected/my-vault/components/file/FilePopover.vue";
 import FolderPopover from "@/pages/protected/my-vault/components/folder/FolderPopover.vue";
 import {useRouter} from "vue-router";
+import {FILE_TYPE_TO_GENERAL_TYPE} from "@/lib/constants/file-type-map.ts";
 
 const props = defineProps<{
   files: IFile[]

@@ -1,5 +1,5 @@
 ﻿<script setup lang="ts">
-import type {IDirectoryPath} from "@/lib/interfaces/file-interface.ts";
+import type {IDirectory} from "@/lib/interfaces/file-interface.ts";
 import {computed} from "vue";
 import NewItemsDropdown from "@/components/new-items-dropdown/NewItemsDropdown.vue";
 import {useRouter} from "vue-router";
@@ -8,7 +8,7 @@ import BreadcrumbListDropdown
 import {navigateBreadcrumb} from "@/pages/protected/my-vault/components/custom-breadcrumb/util.ts";
 
 const props = defineProps<{
-  navItems: IDirectoryPath[];
+  navItems: IDirectory[];
 }>();
 
 // Computed property that adds a static item to the beginning of the navItems

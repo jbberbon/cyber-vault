@@ -14,6 +14,7 @@ import DownloadDialogHidden from "@/components/dialogs/DownloadDialogHidden.vue"
 
 const props = defineProps<{
   file: IFile;
+  class: string
 }>();
 
 const isPopoverOpen = ref(false);
@@ -25,7 +26,7 @@ const isDownloadDialogOpen = ref(false)
 
 <template>
   <PopoverRoot :open="isPopoverOpen" @update:open="isPopoverOpen = !isPopoverOpen">
-    <PopoverTrigger class="bg-transparent border-none p-0">
+    <PopoverTrigger class="bg-transparent border-none p-0" :class="props.class ?? ''">
       <Button
         ref="buttonEl"
         icon="pi pi-ellipsis-v"

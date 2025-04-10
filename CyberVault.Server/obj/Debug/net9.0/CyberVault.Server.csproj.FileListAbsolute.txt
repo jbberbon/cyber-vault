@@ -324,3 +324,6 @@ C:\Users\JohnChristianBerbon\Documents\Berbon - Training\Cyber\John Christian Be
 C:\Users\JohnChristianBerbon\Documents\Berbon - Training\Cyber\John Christian Berbon\CyberVault\CyberVault.Server\bin\Debug\net9.0\Microsoft.Extensions.Logging.Abstractions.dll
 C:\Users\JohnChristianBerbon\Documents\Berbon - Training\Cyber\John Christian Berbon\CyberVault\CyberVault.Server\bin\Debug\net9.0\Microsoft.Extensions.Options.dll
 C:\Users\JohnChristianBerbon\Documents\Berbon - Training\Cyber\John Christian Berbon\CyberVault\CyberVault.Server\bin\Debug\net9.0\Microsoft.Extensions.Primitives.dll
+C:\Users\JohnChristianBerbon\Documents\Berbon - Training\Cyber\John Christian Berbon\CyberVault\CyberVault.Server\bin\Debug\net9.0\Azure.Data.Tables.dll
+C:\Users\JohnChristianBerbon\Documents\Berbon - Training\Cyber\John Christian Berbon\CyberVault\CyberVault.Server\bin\Debug\net9.0\Azure.Storage.Queues.dll
+C:\Users\JohnChristianBerbon\Documents\Berbon - Training\Cyber\John Christian Berbon\CyberVault\CyberVault.Server\bin\Debug\net9.0\Microsoft.Extensions.Azure.dll

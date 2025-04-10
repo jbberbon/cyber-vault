@@ -1,13 +1,12 @@
 ﻿import {defineStore} from 'pinia';
-import {type Ref, ref} from "vue";
 import type {IUser} from "@/lib/interfaces/user-interface.ts"
 import {useLocalStorage} from '@vueuse/core'
 
 export const useUserStore = defineStore('auth', () => {
-  const user: Ref<IUser> = ref({
+  const user = useLocalStorage('user',{
     firstName: "",
     lastName: "",
-    email: ""
+    email: "",
   });
 
   const setUser = (userParam: IUser) => {

@@ -8,6 +8,7 @@ import {Toast} from "primevue";
 import {createPinia} from 'pinia';
 import router from "@/lib/configs/router-config.ts";
 import customStyle from "@/lib/constants/primevue-custom-style.ts";
+import Tooltip from 'primevue/tooltip';
 
 const app = createApp(App);
 
@@ -35,6 +36,9 @@ app.use(VueQueryPlugin);
 // Toaster
 app.use(ToastService);
 app.component('Toast', Toast);
+
+// Tooltip
+app.directive('tooltip', Tooltip)
 
 // Mount the app
 app.mount('#app');

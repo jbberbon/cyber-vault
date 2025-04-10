@@ -27,6 +27,8 @@ router.beforeEach(async (to, from, next) => {
     if (!isAuthenticated) return next('/login');
   }
 
+
+
   next();
 })
 

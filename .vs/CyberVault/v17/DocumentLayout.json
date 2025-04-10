@@ -1,12 +1,52 @@
 {
   "Version": 1,
   "WorkspaceRootPath": "C:\\Users\\JohnChristianBerbon\\Documents\\Berbon - Training\\Cyber\\John Christian Berbon\\CyberVault\\",
-  "Documents": [],
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\JohnChristianBerbon\\AppData\\Roaming\\Microsoft\\UserSecrets\\efdbd48a-4772-4a5c-8a82-1bbd06a753d8\\secrets.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{9FA88E6D-8DF9-41CE-94A5-B88BF6488EE2}|CyberVault.Server\\CyberVault.Server.csproj|c:\\users\\johnchristianberbon\\documents\\berbon - training\\cyber\\john christian berbon\\cybervault\\cybervault.server\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{9FA88E6D-8DF9-41CE-94A5-B88BF6488EE2}|CyberVault.Server\\CyberVault.Server.csproj|solutionrelative:cybervault.server\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    }
+  ],
   "DocumentGroupContainers": [
     {
       "Orientation": 0,
       "VerticalTabListWidth": 256,
-      "DocumentGroups": []
+      "DocumentGroups": [
+        {
+          "DockedWidth": 1141,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "secrets.json",
+              "DocumentMoniker": "C:\\Users\\JohnChristianBerbon\\AppData\\Roaming\\Microsoft\\UserSecrets\\efdbd48a-4772-4a5c-8a82-1bbd06a753d8\\secrets.json",
+              "RelativeDocumentMoniker": "..\\..\\..\\..\\..\\AppData\\Roaming\\Microsoft\\UserSecrets\\efdbd48a-4772-4a5c-8a82-1bbd06a753d8\\secrets.json",
+              "ToolTip": "C:\\Users\\JohnChristianBerbon\\AppData\\Roaming\\Microsoft\\UserSecrets\\efdbd48a-4772-4a5c-8a82-1bbd06a753d8\\secrets.json",
+              "RelativeToolTip": "..\\..\\..\\..\\..\\AppData\\Roaming\\Microsoft\\UserSecrets\\efdbd48a-4772-4a5c-8a82-1bbd06a753d8\\secrets.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAACAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2025-04-03T08:17:22.751Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "appsettings.json",
+              "DocumentMoniker": "C:\\Users\\JohnChristianBerbon\\Documents\\Berbon - Training\\Cyber\\John Christian Berbon\\CyberVault\\CyberVault.Server\\appsettings.json",
+              "RelativeDocumentMoniker": "CyberVault.Server\\appsettings.json",
+              "ToolTip": "C:\\Users\\JohnChristianBerbon\\Documents\\Berbon - Training\\Cyber\\John Christian Berbon\\CyberVault\\CyberVault.Server\\appsettings.json",
+              "RelativeToolTip": "CyberVault.Server\\appsettings.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2025-04-03T08:16:33.261Z"
+            }
+          ]
+        }
+      ]
     }
   ]
 }

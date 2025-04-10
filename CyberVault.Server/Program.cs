@@ -1,9 +1,11 @@
+using Azure.Storage.Blobs;
 using CyberVault.Server.Data;
 using CyberVault.Server.Miscs.Constants;
 using CyberVault.Server.Miscs.Utilities.AuthHelpers;
 using CyberVault.Server.Models;
 using CyberVault.Server.Services.AzureBlobService;
 using CyberVault.Server.Services.AuthService;
+using CyberVault.Server.Services.Configs.Azure;
 using CyberVault.Server.Services.DirectoryService;
 using CyberVault.Server.Services.FilesService;
 using CyberVault.Server.Services.ModelService;
@@ -83,6 +85,7 @@ builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IAzureBlobService, AzureBlobService>();
 builder.Services.AddScoped<IFilesService, FilesService>();
 builder.Services.AddScoped<IDirectoryService, DirectoryService>();
+
 builder.Services.AddSingleton<IAuthHelpers, AuthHelpers>();
 
 // --> 04.01 Model Services
@@ -92,18 +95,8 @@ builder.Services.AddScoped<IFolderService, FolderService>();
 builder.Services.AddScoped<Lazy<IFilesService>>(provider =>
     new Lazy<IFilesService>(() => provider.GetRequiredService<IFilesService>()));
 
-
-// CORS For deployed frontend
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy("AllowSpecificOrigin", policy =>
-    {
-        policy.WithOrigins("https://cyber-vault-fad3cpb2dqgje7fn.southeastasia-01.azurewebsites.net")  // Specify the frontend URL or wildcard '*'
-            .AllowAnyHeader()
-            .AllowAnyMethod()
-            .AllowCredentials();  // Important if you are using cookies
-    });
-});
+// Azure Connections
+new AzureStorageAccountConfig(builder);
 
 var app = builder.Build();
 

@@ -14,8 +14,10 @@
     <PackageJsonDependenciesPrimeuixThemes Condition="$(PackageJsonDependenciesPrimeuixThemes) == ''">^1.0.0</PackageJsonDependenciesPrimeuixThemes>
     <PackageJsonDependenciesTailwindcssVite Condition="$(PackageJsonDependenciesTailwindcssVite) == ''">^4.0.9</PackageJsonDependenciesTailwindcssVite>
     <PackageJsonDependenciesTanstackVueQuery Condition="$(PackageJsonDependenciesTanstackVueQuery) == ''">^5.67.1</PackageJsonDependenciesTanstackVueQuery>
+    <PackageJsonDependenciesTato30VuePdf Condition="$(PackageJsonDependenciesTato30VuePdf) == ''">^1.11.3</PackageJsonDependenciesTato30VuePdf>
     <PackageJsonDependenciesVeeValidateZod Condition="$(PackageJsonDependenciesVeeValidateZod) == ''">^4.15.0</PackageJsonDependenciesVeeValidateZod>
     <PackageJsonDependenciesAxios Condition="$(PackageJsonDependenciesAxios) == ''">^1.8.1</PackageJsonDependenciesAxios>
+    <PackageJsonDependenciesPdfjsDist Condition="$(PackageJsonDependenciesPdfjsDist) == ''">^5.1.91</PackageJsonDependenciesPdfjsDist>
     <PackageJsonDependenciesPinia Condition="$(PackageJsonDependenciesPinia) == ''">^3.0.1</PackageJsonDependenciesPinia>
     <PackageJsonDependenciesPostcssCli Condition="$(PackageJsonDependenciesPostcssCli) == ''">^11.0.0</PackageJsonDependenciesPostcssCli>
     <PackageJsonDependenciesPrimeicons Condition="$(PackageJsonDependenciesPrimeicons) == ''">^7.0.0</PackageJsonDependenciesPrimeicons>

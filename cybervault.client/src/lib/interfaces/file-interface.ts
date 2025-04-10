@@ -6,16 +6,30 @@
   content?: string
 }
 
-interface IDirectoryPath {
+interface IFileSas {
+  previewSas?: string,
+  downloadSas?: string
+}
+
+interface IDirectory {
   serverAssignedId?: string,
   name?: string
 }
+
 interface IFileList {
-  directoryPathArray: IDirectoryPath[],
+  directoryPathArray: IDirectory[], // Sequence of directories from root to current directory
   items: IFile[]
 }
 
-interface IFileDownloadOrDelete {
+interface IFileDownload {
+  fileName: string,
+  parentDirectoryId?: string,
+  "downloadOrPreview.forPreview"?: boolean,
+  "downloadOrPreview.forDownload"?: boolean,
+}
+
+
+interface IFileDelete {
   fileName: string,
   parentDirectoryId?: string
 }
@@ -30,4 +44,13 @@ interface IUploadFile {
   parentFolderId?: string
 }
 
-export type {IFile, IFileList, IDirectoryPath, IFileDownloadOrDelete, ICreateFolder, IUploadFile}
+export type {
+  IFile,
+  IFileSas,
+  IFileList,
+  IDirectory,
+  IFileDownload,
+  IFileDelete,
+  ICreateFolder,
+  IUploadFile
+}

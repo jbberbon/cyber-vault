@@ -2,7 +2,7 @@
 import Dialog from "primevue/dialog"
 import Button from "primevue/button";
 import {computed} from "vue";
-import {useDeleteFolder} from "@/lib/services/files/use-file.ts";
+import {useDeleteFolder} from "@/lib/services/folders/use-delete-folder.ts";
 import {useCallToast} from "@/lib/hooks/use-call-toast.ts";
 import DELETE_FOLDER_ERR_MAP
   from "@/lib/constants/api-error-messages/file-error-messages.ts/delete-folder-error-msg.ts";

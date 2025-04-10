@@ -3,15 +3,17 @@ import Button from "primevue/button";
 import {PopoverArrow, PopoverContent, PopoverPortal, PopoverRoot, PopoverTrigger} from "radix-vue";
 import {ref} from "vue";
 import LogoutDialog from "@/components/dialogs/LogoutDialog.vue";
+import {useUserStore} from "@/lib/stores/user-store.ts";
 
 const isPopoverOpen = ref(false);
 
 const isLogoutDialogOpen = ref(false);
+const userStore = useUserStore()
 </script>
 
 <template>
   <PopoverRoot :open="isPopoverOpen" @update:open="isPopoverOpen = !isPopoverOpen">
-    <PopoverTrigger class="bg-transparent border-none p-0">
+    <PopoverTrigger class="bg-transparent border-none p-0" v-tooltip.bottom="{ value: userStore.user.email }">
       <Button icon="pi pi-user" variant="outlined" rounded aria-label="Notification"/>
     </PopoverTrigger>
     <PopoverPortal>

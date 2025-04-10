@@ -2,7 +2,7 @@
 import {computed, ref} from "vue";
 import TieredMenu from 'primevue/tieredmenu';
 import NewFolderModal from "@/components/dialogs/NewFolderModal.vue";
-import {useUploadFile} from "@/lib/services/files/use-file.ts";
+import {useUploadFile} from "@/lib/services/files/use-upload-file.ts";
 import {useRoute} from "vue-router";
 import type {IUploadFile} from "@/lib/interfaces/file-interface.ts";
 

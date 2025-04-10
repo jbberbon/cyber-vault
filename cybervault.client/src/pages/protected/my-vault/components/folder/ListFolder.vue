@@ -25,7 +25,7 @@ const navigateFolder = () => {
 
 <template>
   <div class="relative">
-    <div @click="navigateFolder"
+    <div @dblclick="navigateFolder"
          class="bg-[var(--p-surface-100)] dark:bg-[var(--p-surface-800)] py-2 px-3 pr-1 justify-between rounded-sm cursor-pointer hover:bg-[var(--p-surface-200)] dark:hover:bg-[var(--p-surface-700)]">
       <div class="w-full h-full flex items-center gap-2">
         <i :class="folderIcon"></i>
@@ -33,6 +33,6 @@ const navigateFolder = () => {
       </div>
     </div>
 
-    <FolderPopover :folder="props.folder" class="absolute !top-1 !right-1 z-999"/>
+    <FolderPopover :folder="props.folder" class="absolute !top-1 !right-1"/>
   </div>
 </template>

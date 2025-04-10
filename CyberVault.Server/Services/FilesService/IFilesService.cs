@@ -6,6 +6,6 @@ public interface IFilesService
 {
     public Task<BlobFileResponseDto> ListAsync(string ownerId, string directoryId);
     public Task<BlobFileResponseDto> UploadAsync(string ownerId, IFormFile file, string parentDirectoryId);
-    public Task<BlobFileResponseDto> DownloadAsync(string ownerId, string fileName, string parentDirectoryId);
+    public Task<BlobFileResponseDto> DownloadAsync(DownloadFileServiceDto request);
     public Task<BlobFileResponseDto> DeleteAsync(string ownerId, string fileName, string parentDirectoryId);
 }

@@ -35,7 +35,7 @@ public class FilesController : ControllerBase
 
         // 03. Success
         if (response.IsSuccess) return Ok(response.BlobFileList);
-        
+
         // 04. Error
         var hasError = response.Errors.Any();
         return hasError
@@ -69,7 +69,7 @@ public class FilesController : ControllerBase
 
     [HttpGet("download")]
     [Authorize]
-    public async Task<IActionResult> Download([FromQuery] DownloadOrDeleteFileDto request)
+    public async Task<IActionResult> Download([FromQuery] DownloadFileDto request)
     {
         // 01. Retrieve and check user id if exists
         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -79,10 +79,22 @@ public class FilesController : ControllerBase
         }
 
         // 02. Call DownloadAsync Service
-        var response = await _filesService.DownloadAsync(userId, request.FileName, request.ParentDirectoryId);
+        var serviceParams = new DownloadFileServiceDto
+        {
+            OwnerId = userId,
+            FileName = request.FileName,
+            ParentDirectoryId = request.ParentDirectoryId,
+            DownloadOrPreview = new ForDownloadOrPreview
+            {
+                ForPreview = request.DownloadOrPreview.ForPreview,
+                ForDownload = request.DownloadOrPreview.ForDownload,
+            }
+        };
+        var response =
+            await _filesService.DownloadAsync(serviceParams);
 
         // 03. Success
-        if (response.IsSuccess) return Ok(new { sasUrl = response.SasUrl });
+        if (response.IsSuccess) return Ok(response.SasUrl);
 
         // 04. Error
         var hasError = response.Errors.Any();
@@ -93,7 +105,7 @@ public class FilesController : ControllerBase
 
     [HttpDelete("delete")]
     [Authorize]
-    public async Task<IActionResult> Delete([FromBody] DownloadOrDeleteFileDto request)
+    public async Task<IActionResult> Delete([FromBody] DeleteFileDto request)
     {
         // 01. Retrieve and check user id if exists
         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);

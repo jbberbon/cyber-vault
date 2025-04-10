@@ -46,7 +46,7 @@ const isRenameDialogOpen = ref(false);
                   class="p-button-text p-button-danger !flex !justify-start !w-full"
                   @click="isConfirmDeleteOpen = true"/>
         </div>
-        <PopoverArrow class="fill-white fill-white dark:fill-[var(--p-surface-900)]"/>
+        <PopoverArrow class="fill-white dark:fill-[var(--p-surface-900)]"/>
       </PopoverContent>
     </PopoverPortal>
   </PopoverRoot>

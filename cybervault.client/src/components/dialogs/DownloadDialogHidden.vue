@@ -1,6 +1,6 @@
 ﻿<script setup lang="ts">
 
-import {useDownloadFile} from "@/lib/services/files/use-file.ts";
+import {useGetFileUrl} from "@/lib/services/files/use-get-file-url.ts";
 import {watchEffect} from "vue";
 import {useRouter} from "vue-router";
 import {useCallToast} from "@/lib/hooks/use-call-toast.ts";
@@ -18,7 +18,7 @@ const emit = defineEmits();
 
 const router = useRouter()
 const toast = useCallToast()
-const {data, refetch, error} = useDownloadFile({
+const {data, refetch, error} = useGetFileUrl({
   fileName: props.name,
   parentDirectoryId: props.parentDirectoryId
 });
@@ -29,7 +29,6 @@ const closeAndUpdate = () => {
 
 const handleDownloadFile = async () => {
   await refetch()
-
 
   if (!error.value && data.value) {
     // Create a-tag and append sasUrl

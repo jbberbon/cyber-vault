@@ -6,9 +6,7 @@ using CyberVault.Server.DTO.BlobFile;
 using CyberVault.Server.Miscs.Constants;
 using CyberVault.Server.Miscs.Utilities;
 using CyberVault.Server.Models;
-using CyberVault.Server.Services.AzureBlobService;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
 
 namespace CyberVault.Server.Services.DirectoryService;
 
@@ -21,20 +19,21 @@ public class DirectoryService : IDirectoryService
     private readonly AppDbContext _dbContext;
 
     public DirectoryService(
-        IAzureBlobService azureBlobService,
+        BlobContainerClient blobContainerClient,
+        DataLakeServiceClient dataLakeServiceClient,
         ILogger<DirectoryService> logger,
         AppDbContext dbContext
     )
     {
-        _blobContainerClient = azureBlobService.BlobContainerClient;
-        _dataLakeServiceClient = azureBlobService.DataLakeServiceClient;
+        _blobContainerClient = blobContainerClient;
+        _dataLakeServiceClient = dataLakeServiceClient;
         _logger = logger;
         _dbContext = dbContext;
     }
 
     public async Task<bool> DirectoryExistsAsync(string directory)
     {
-        string directoryPrefix = directory.TrimEnd('/');
+        var directoryPrefix = directory.TrimEnd('/');
 
         // 01. Get the filesystem client
         var fileSystemClient = _dataLakeServiceClient.GetFileSystemClient(_blobContainerClient.Name);
@@ -51,7 +50,7 @@ public class DirectoryService : IDirectoryService
 
     public async Task<bool> FolderNameExistsAsync(string ownerId, string folderName, string parentPathWithNoUserId)
     {
-        Boolean isExisting;
+        bool isExisting;
         // 01. Check on Root Directory
         if (string.IsNullOrEmpty(parentPathWithNoUserId))
         {

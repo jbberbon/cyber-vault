@@ -1,55 +1,70 @@
-﻿using Azure.Storage;
-using Azure.Storage.Blobs;
-using Azure.Storage.Files.DataLake;
+﻿using Azure.Storage.Blobs;
 using Azure.Storage.Sas;
+using System;
+using Azure.Storage;
+using CyberVault.Server.DTO.BlobFile;
 using CyberVault.Server.Miscs.Constants;
 
-namespace CyberVault.Server.Services.AzureBlobService;
-
-public class AzureBlobService : IAzureBlobService
+namespace CyberVault.Server.Services.AzureBlobService
 {
-    private readonly IConfiguration _config;
-    private readonly string _storageAccount;
-    private readonly string _key;
-    public BlobContainerClient BlobContainerClient { get; }
-    public DataLakeServiceClient DataLakeServiceClient { get; }
-
-    public AzureBlobService(
-        IConfiguration config
-    )
+    public class AzureBlobService : IAzureBlobService
     {
-        _config = config;
-        _storageAccount = _config[UserSecretKeys.BlobStorageAccount] ??
-                          throw new ArgumentException("BlobStorageAccount configuration value is missing.");
-        _key = _config[UserSecretKeys.BlobKey] ??
-               throw new ArgumentException("BlobStorageKey configuration value is missing.");
+        private readonly BlobContainerClient _blobContainerClient;
+        private readonly IConfiguration _configuration;
+        private readonly string _accountKey;
 
-        var credential = new StorageSharedKeyCredential(_storageAccount, _key);
+        public AzureBlobService(BlobContainerClient blobContainerClient, IConfiguration configuration)
+        {
+            _configuration = configuration;
+            _accountKey = _configuration[UserSecretKeys.BlobAccountKey] ?? throw new ArgumentNullException("BlobStorage:AccountKey");
+            _blobContainerClient = blobContainerClient;
+        }
 
-        // Create blob service client
-        var blobUri = $"https://{_storageAccount}.blob.core.windows.net";
-        var blobServiceClient = new BlobServiceClient(new Uri(blobUri), credential);
-        BlobContainerClient = blobServiceClient.GetBlobContainerClient("cybervault");
+        public BlobSasUrlDto GenerateReadOnlySasToken(string fullPath, ForDownloadOrPreview downloadOrPreview)
+        {
+            var result = new BlobSasUrlDto();
+            
+            // 01. Get a reference to the BlobClient using the full path (including any subdirectories)
+            var blobClient = _blobContainerClient.GetBlobClient(fullPath);
 
-        // Create data lake service client
-        var dataLakeUri = $"https://{_storageAccount}.dfs.core.windows.net";
-        DataLakeServiceClient = new DataLakeServiceClient(new Uri(dataLakeUri), credential);
-    }
+            // 02. Set the SAS token expiration time
+            var expirationTime = DateTimeOffset.UtcNow.AddHours(1);
 
-    public string GenerateReadOnlySasToken(string fileName)
-    {
-        // Get a reference to the BlobClient
-        var blobClient = BlobContainerClient.GetBlobClient(fileName);
+            // 03. Set the SAS token permissions (e.g., read permissions)
+            var permissions = BlobSasPermissions.Read;
 
-        // Set the SAS token expiration time (e.g., 1 hour from now)
-        var expirationTime = DateTimeOffset.UtcNow.AddHours(1);
-
-        // Set the SAS token permissions (e.g., read and write permissions)
-        var permissions = BlobSasPermissions.Read;
-
-        // Generate the SAS token for the blob
-        var sasToken = blobClient.GenerateSasUri(permissions, expirationTime).Query;
-        sasToken = $"{blobClient.Uri}{sasToken}";
-        return sasToken;
+            // 04. Create the SAS token builder
+            var sasBuilder = new BlobSasBuilder(permissions, expirationTime)
+            {
+                BlobContainerName = _blobContainerClient.Name,
+                BlobName = fullPath // Use full path here, not just the file name
+            };
+            
+            // 05. Check if Preview Sas is requested
+            if (downloadOrPreview.ForPreview)
+            {
+                // 05.01  the SAS token
+                var previewToken = sasBuilder.ToSasQueryParameters(new StorageSharedKeyCredential(_blobContainerClient.AccountName, _accountKey)).ToString();
+                
+                // 05.02 Store the preview URL in the result
+                result.PreviewSas = $"{blobClient.Uri}?{previewToken}";
+            }
+            
+            // 06. Check if Download Sas is requested
+            if (downloadOrPreview.ForDownload)
+            {
+                // 06.01 Set the content-disposition header to force download
+                sasBuilder.ContentDisposition = "attachment;";
+                
+                // 06.02 Generate the SAS token
+                var downloadToken = sasBuilder.ToSasQueryParameters(new StorageSharedKeyCredential(_blobContainerClient.AccountName, _accountKey)).ToString();
+                
+                // 06.03 Store the download URL in the result
+                result.DownloadSas = $"{blobClient.Uri}?{downloadToken}";
+            }
+            
+            // 07. Return the result
+            return result;
+        }
     }
 }

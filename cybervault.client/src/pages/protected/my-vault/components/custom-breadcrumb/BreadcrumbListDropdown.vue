@@ -2,11 +2,11 @@
 import {ref} from "vue";
 import TieredMenu from 'primevue/tieredmenu';
 import {useRouter} from "vue-router";
-import type {IDirectoryPath} from "@/lib/interfaces/file-interface.ts";
+import type {IDirectory} from "@/lib/interfaces/file-interface.ts";
 import {navigateBreadcrumb} from "@/pages/protected/my-vault/components/custom-breadcrumb/util.ts";
 
 const props = defineProps<{
-  items: IDirectoryPath[];
+  items: IDirectory[];
 }>()
 const router = useRouter();
 const newButtonPopout = ref();

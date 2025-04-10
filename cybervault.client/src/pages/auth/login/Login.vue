@@ -8,29 +8,37 @@ import {useRouter} from 'vue-router';
 import {useLogin} from "@/lib/services/auth/use-login.ts";
 import type {ILoginUser} from "@/lib/interfaces/user-interface.ts";
 import LOGIN_ERR from "@/lib/constants/api-error-messages/login-error-messages.ts";
-import {useCallToast} from "@/lib/hooks/use-call-toast.ts";
+import {useUserStore} from "@/lib/stores/user-store.ts";
 
 const router = useRouter();
-const toast = useCallToast(LOGIN_ERR);
-const {handleSubmit, errors} = useForm({
+const {handleSubmit, errors, setFieldError} = useForm({
   validationSchema: loginSchema
 });
 const {value: email} = useField<string | null>('email');
 const {value: password} = useField<string | null>('password');
-const {mutateAsync, isPending, isSuccess, error} = useLogin();
-const isPageFreezed = isPending || isSuccess;
+const login = useLogin();
+const isPageFrozen = login.isPending || login.isSuccess;
+
+const userStore = useUserStore();
 
 const onSubmit = handleSubmit(async (credentials: ILoginUser) => {
   try {
-    await mutateAsync(credentials, {
-      onSuccess: () => {
+    await login.mutateAsync(credentials, {
+      onSuccess: (data) => {
+        if (data) {
+          userStore.setUser(data.data)
+        }
         router.push("/home");
       }
     });
   } catch {
-    toast({
-      httpCode: error?.value?.response?.status ?? 500
-    })
+    // Get appropriate error message from the backend response or fallback to default
+    const errorMessage = login.error?.value?.response?.status ?
+      LOGIN_ERR[login.error?.value?.response?.status] :
+      LOGIN_ERR[500];
+
+    // Set the error on the password field
+    setFieldError("password", errorMessage);
   }
 });
 
@@ -63,7 +71,7 @@ const onSubmit = handleSubmit(async (credentials: ILoginUser) => {
       </div>
 
       <div class="pt-4 w-full flex flex-col gap-2">
-        <Button type="submit" fluid :disabled="isPageFreezed">Sign in</Button>
+        <Button type="submit" fluid :disabled="isPageFrozen">Sign in</Button>
         <div class="flex flex-row gap-2">
           <Divider/>
           <p class="flex items-center">or</p>

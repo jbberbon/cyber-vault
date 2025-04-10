@@ -35,6 +35,7 @@ const darkModeStore = useDarkModeStore();
 
       <div class="hidden sm:flex items-center gap-1">
         <Button
+          v-tooltip.bottom="{ value: 'Toggle dark mode'}"
           :icon="darkModeStore.isDarkMode ? 'pi pi-sun' : 'pi pi-moon'"
           severity="secondary"
           variant="text" rounded

@@ -1,4 +1,5 @@
 ﻿using Azure.Storage.Blobs;
+using Azure.Storage.Blobs.Models;
 using CyberVault.Server.DTO.BlobFile;
 using CyberVault.Server.Miscs.Constants;
 using CyberVault.Server.Miscs.Utilities;
@@ -17,6 +18,7 @@ public class FilesService : IFilesService
     private readonly IAzureBlobService _azureBlobService;
 
     public FilesService(
+        BlobContainerClient blobContainerClient,
         IAzureBlobService azureBlobService,
         IDirectoryService directoryService,
         ILogger<FilesService> logger,
@@ -24,7 +26,7 @@ public class FilesService : IFilesService
     )
     {
         _azureBlobService = azureBlobService;
-        _blobContainerClient = azureBlobService.BlobContainerClient;
+        _blobContainerClient = blobContainerClient;
         _directoryService = directoryService;
         _logger = logger;
         _folderService = folderService;
@@ -40,7 +42,7 @@ public class FilesService : IFilesService
             var retrievedPath = "";
             string fullPath;
             var items = new List<BlobFileDto>();
-            
+
             if (string.IsNullOrEmpty(directoryId)) // Root folder
             {
                 fullPath = $"{ownerId}/";
@@ -136,7 +138,7 @@ public class FilesService : IFilesService
             _logger.LogError("Something went wrong while retrieving blobs. Errors: {Errors}", string.Join(", ", e));
             response.IsSuccess = false;
             response.ErrorCode = ErrorCodes.InternalServerError;
-            response.Errors = ["Something went wrong while retrieving blobs. HUHU"];
+            response.Errors = ["Something went wrong while retrieving blobs."];
             return response;
         }
     }
@@ -170,14 +172,27 @@ public class FilesService : IFilesService
                 blobName = $"{ownerId}/{retrievedPath}/{file.FileName}";
             }
 
-            // 02. Upload the file
-            BlobClient client = _blobContainerClient.GetBlobClient(blobName);
-            await using (Stream data = file.OpenReadStream())
+            // 03. Get the MimeType of the file
+            var mimeType = file.ContentType;
+            if (string.IsNullOrEmpty(mimeType))
             {
-                await client.UploadAsync(data);
+                mimeType = "application/octet-stream";
             }
 
-            // 03. Success
+            // 04. Set the content type explicitly in the BlobHttpHeaders
+            var blobHttpHeaders = new BlobHttpHeaders()
+            {
+                ContentType = mimeType
+            };
+
+            // 05. Upload the file with the proper Content Type
+            var client = _blobContainerClient.GetBlobClient(blobName);
+            await using (var data = file.OpenReadStream())
+            {
+                await client.UploadAsync(data, new BlobUploadOptions { HttpHeaders = blobHttpHeaders });
+            }
+
+            // 06. Success
             response.IsSuccess = true;
             return response;
         }
@@ -200,23 +215,23 @@ public class FilesService : IFilesService
         }
     }
 
-    public async Task<BlobFileResponseDto> DownloadAsync(string ownerId, string fileName, string parentDirectoryId)
+    public async Task<BlobFileResponseDto> DownloadAsync(DownloadFileServiceDto request)
     {
         var response = new BlobFileResponseDto();
         try
         {
             // 01. Prepare fullPath
             string fullPath;
-            if (string.IsNullOrEmpty(parentDirectoryId)) // Root folder
+            if (string.IsNullOrEmpty(request.ParentDirectoryId)) // Root folder
             {
-                fullPath = $"{ownerId}/{fileName}";
+                fullPath = $"{request.OwnerId}/{request.FileName}";
             }
             else // Subdirectory
             {
                 var retrievedPath = await _folderService
                     .GetFolderPathByIdAndOwnerAsync(
-                        Guid.Parse(parentDirectoryId),
-                        ownerId
+                        Guid.Parse(request.ParentDirectoryId),
+                        request.OwnerId
                     );
                 if (string.IsNullOrEmpty(retrievedPath))
                 {
@@ -225,11 +240,11 @@ public class FilesService : IFilesService
                     return response;
                 }
 
-                fullPath = $"{ownerId}/{retrievedPath}/{fileName}";
+                fullPath = $"{request.OwnerId}/{retrievedPath}/{request.FileName}";
             }
 
             // 02. Prepare BlobClient
-            BlobClient file = _blobContainerClient.GetBlobClient(fullPath);
+            var file = _blobContainerClient.GetBlobClient(fullPath);
 
             // 03. Check if file exists first
             var fileExists = await file.ExistsAsync();
@@ -242,7 +257,7 @@ public class FilesService : IFilesService
             }
 
             // 04. Get the download URL from Azure
-            var sasUrl = _azureBlobService.GenerateReadOnlySasToken(fullPath);
+            var sasUrl = _azureBlobService.GenerateReadOnlySasToken(fullPath, request.DownloadOrPreview);
 
             // 05. Success
             response.IsSuccess = true;
@@ -298,7 +313,7 @@ public class FilesService : IFilesService
             }
 
             // 02. Prepare BlobClient
-            BlobClient file = _blobContainerClient.GetBlobClient(fullPath);
+            var file = _blobContainerClient.GetBlobClient(fullPath);
 
             // 03. Check if file exists first
             var fileExists = await file.ExistsAsync();

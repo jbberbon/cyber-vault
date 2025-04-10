@@ -6,7 +6,7 @@ import Dialog from 'primevue/dialog';
 import {useRoute} from 'vue-router';
 import {useField, useForm} from 'vee-validate';
 import {createFolderSchema} from "@/lib/schemas/create-folder-schema.ts";
-import {useCreateFolder} from "@/lib/services/files/use-file.ts";
+import {useCreateFolder} from "@/lib/services/folders/use-create-folder.ts";
 import type {ICreateFolder} from "@/lib/interfaces/file-interface.ts";
 import {useCallToast} from "@/lib/hooks/use-call-toast.ts";
 import CREATE_FOLDER_ERR_MAP

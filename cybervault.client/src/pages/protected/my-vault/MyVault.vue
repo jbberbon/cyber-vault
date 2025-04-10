@@ -1,6 +1,6 @@
 ﻿<script setup lang="ts">
 import MainLayout from "@/components/layouts/MainLayout.vue";
-import {useListFiles} from "@/lib/services/files/use-file.ts";
+import {useListFiles} from "@/lib/services/files/use-list-files.ts";
 import {computed, defineAsyncComponent, watch, watchEffect} from "vue";
 import {useCallToast} from "@/lib/hooks/use-call-toast.ts";
 import {useRouter} from "vue-router";
@@ -28,11 +28,6 @@ const folders = computed(() =>
 const files = computed(() =>
   listFilesQuery.data.value?.data?.items.filter(item => item.contentType !== "directory") || []
 );
-
-watchEffect(
-  () =>
-    console.log("fetched data", listFilesQuery.data.value?.data)
-)
 
 
 // 03. React to fetch list errors
